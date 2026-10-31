@@ -2,7 +2,7 @@ import { useState, type ReactNode, type ImgHTMLAttributes } from "react";
 import { img as resolve, FALLBACK_IMAGE } from "@/lib/images";
 import { useSite, useToasts } from "@/lib/store";
 
-export function Img({ src, alt, className = "", ...rest }: Omit<ImgHTMLAttributes<HTMLImageElement>, "src"> & { src?: string; alt: string }) {
+export function Img({ src, alt, className = "", ...rest }: Omit<ImgHTMLAttributes<HTMLImageElement>, "src"> & { src?: string | undefined; alt: string }) {
   const [failed, setFailed] = useState(false);
   return (
     <img

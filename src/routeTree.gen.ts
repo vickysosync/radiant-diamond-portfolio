@@ -12,10 +12,13 @@ import { Route as rootRouteImport } from './routes/__root'
 import { Route as SiteRouteImport } from './routes/_site'
 import { Route as SiteIndexRouteImport } from './routes/_site.index'
 import { Route as SiteAboutRouteImport } from './routes/_site.about'
+import { Route as SiteCompanyDetailsRouteImport } from './routes/_site.company-details'
+import { Route as SiteContactRouteImport } from './routes/_site.contact'
 import { Route as SiteExpertiseRouteImport } from './routes/_site.expertise'
 import { Route as SiteGalleryRouteImport } from './routes/_site.gallery'
 import { Route as SiteProcessRouteImport } from './routes/_site.process'
 import { Route as SiteProductsRouteImport } from './routes/_site.products'
+import { Route as AdminLoginRouteImport } from './routes/admin.login'
 
 const SiteRoute = SiteRouteImport.update({
   id: '/_site',
@@ -29,6 +32,16 @@ const SiteIndexRoute = SiteIndexRouteImport.update({
 const SiteAboutRoute = SiteAboutRouteImport.update({
   id: '/about',
   path: '/about',
+  getParentRoute: () => SiteRoute,
+} as any)
+const SiteCompanyDetailsRoute = SiteCompanyDetailsRouteImport.update({
+  id: '/company-details',
+  path: '/company-details',
+  getParentRoute: () => SiteRoute,
+} as any)
+const SiteContactRoute = SiteContactRouteImport.update({
+  id: '/contact',
+  path: '/contact',
   getParentRoute: () => SiteRoute,
 } as any)
 const SiteExpertiseRoute = SiteExpertiseRouteImport.update({
@@ -51,52 +64,87 @@ const SiteProductsRoute = SiteProductsRouteImport.update({
   path: '/products',
   getParentRoute: () => SiteRoute,
 } as any)
+const AdminLoginRoute = AdminLoginRouteImport.update({
+  id: '/admin/login',
+  path: '/admin/login',
+  getParentRoute: () => rootRouteImport,
+} as any)
 
 export interface FileRoutesByFullPath {
   '/': typeof SiteIndexRoute
   '/about': typeof SiteAboutRoute
+  '/company-details': typeof SiteCompanyDetailsRoute
+  '/contact': typeof SiteContactRoute
   '/expertise': typeof SiteExpertiseRoute
   '/gallery': typeof SiteGalleryRoute
   '/process': typeof SiteProcessRoute
   '/products': typeof SiteProductsRoute
+  '/admin/login': typeof AdminLoginRoute
 }
 export interface FileRoutesByTo {
   '/about': typeof SiteAboutRoute
+  '/company-details': typeof SiteCompanyDetailsRoute
+  '/contact': typeof SiteContactRoute
   '/expertise': typeof SiteExpertiseRoute
   '/gallery': typeof SiteGalleryRoute
   '/process': typeof SiteProcessRoute
   '/products': typeof SiteProductsRoute
+  '/admin/login': typeof AdminLoginRoute
   '/': typeof SiteIndexRoute
 }
 export interface FileRoutesById {
   __root__: typeof rootRouteImport
   '/_site': typeof SiteRouteWithChildren
   '/_site/about': typeof SiteAboutRoute
+  '/_site/company-details': typeof SiteCompanyDetailsRoute
+  '/_site/contact': typeof SiteContactRoute
   '/_site/expertise': typeof SiteExpertiseRoute
   '/_site/gallery': typeof SiteGalleryRoute
   '/_site/process': typeof SiteProcessRoute
   '/_site/products': typeof SiteProductsRoute
+  '/admin/login': typeof AdminLoginRoute
   '/_site/': typeof SiteIndexRoute
 }
 export interface FileRouteTypes {
   fileRoutesByFullPath: FileRoutesByFullPath
   fullPaths:
-    '/' | '/about' | '/expertise' | '/gallery' | '/process' | '/products'
+    | '/'
+    | '/about'
+    | '/company-details'
+    | '/contact'
+    | '/expertise'
+    | '/gallery'
+    | '/process'
+    | '/products'
+    | '/admin/login'
   fileRoutesByTo: FileRoutesByTo
-  to: '/about' | '/expertise' | '/gallery' | '/process' | '/products' | '/'
+  to:
+    | '/about'
+    | '/company-details'
+    | '/contact'
+    | '/expertise'
+    | '/gallery'
+    | '/process'
+    | '/products'
+    | '/admin/login'
+    | '/'
   id:
     | '__root__'
     | '/_site'
     | '/_site/about'
+    | '/_site/company-details'
+    | '/_site/contact'
     | '/_site/expertise'
     | '/_site/gallery'
     | '/_site/process'
     | '/_site/products'
+    | '/admin/login'
     | '/_site/'
   fileRoutesById: FileRoutesById
 }
 export interface RootRouteChildren {
   SiteRoute: typeof SiteRouteWithChildren
+  AdminLoginRoute: typeof AdminLoginRoute
 }
 
 declare module '@tanstack/react-router' {
@@ -120,6 +168,20 @@ declare module '@tanstack/react-router' {
       path: '/about'
       fullPath: '/about'
       preLoaderRoute: typeof SiteAboutRouteImport
+      parentRoute: typeof SiteRoute
+    }
+    '/_site/company-details': {
+      id: '/_site/company-details'
+      path: '/company-details'
+      fullPath: '/company-details'
+      preLoaderRoute: typeof SiteCompanyDetailsRouteImport
+      parentRoute: typeof SiteRoute
+    }
+    '/_site/contact': {
+      id: '/_site/contact'
+      path: '/contact'
+      fullPath: '/contact'
+      preLoaderRoute: typeof SiteContactRouteImport
       parentRoute: typeof SiteRoute
     }
     '/_site/expertise': {
@@ -150,11 +212,20 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof SiteProductsRouteImport
       parentRoute: typeof SiteRoute
     }
+    '/admin/login': {
+      id: '/admin/login'
+      path: '/admin/login'
+      fullPath: '/admin/login'
+      preLoaderRoute: typeof AdminLoginRouteImport
+      parentRoute: typeof rootRouteImport
+    }
   }
 }
 
 interface SiteRouteChildren {
   SiteAboutRoute: typeof SiteAboutRoute
+  SiteCompanyDetailsRoute: typeof SiteCompanyDetailsRoute
+  SiteContactRoute: typeof SiteContactRoute
   SiteExpertiseRoute: typeof SiteExpertiseRoute
   SiteGalleryRoute: typeof SiteGalleryRoute
   SiteProcessRoute: typeof SiteProcessRoute
@@ -164,6 +235,8 @@ interface SiteRouteChildren {
 
 const SiteRouteChildren: SiteRouteChildren = {
   SiteAboutRoute: SiteAboutRoute,
+  SiteCompanyDetailsRoute: SiteCompanyDetailsRoute,
+  SiteContactRoute: SiteContactRoute,
   SiteExpertiseRoute: SiteExpertiseRoute,
   SiteGalleryRoute: SiteGalleryRoute,
   SiteProcessRoute: SiteProcessRoute,
@@ -175,6 +248,7 @@ const SiteRouteWithChildren = SiteRoute._addFileChildren(SiteRouteChildren)
 
 const rootRouteChildren: RootRouteChildren = {
   SiteRoute: SiteRouteWithChildren,
+  AdminLoginRoute: AdminLoginRoute,
 }
 export const routeTree = rootRouteImport
   ._addFileChildren(rootRouteChildren)
